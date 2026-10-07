@@ -1,0 +1,20 @@
+# Dependencies & build output
+node_modules/
+.next/
+tsconfig.tsbuildinfo
+
+# Local database. Your tracked jobs, resume text and search history live here,
+# so these must never be committed.
+data/*.db
+data/*.db-journal
+data/*.db-shm
+data/*.db-wal
+data/*.backup-*
+data/*.log
+
+# Local environment overrides. May contain machine paths or a Gmail app password.
+.env
+.env.local
+.env*.local
+
+npm-debug.log*

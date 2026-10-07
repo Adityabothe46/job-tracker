@@ -1,0 +1,92 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * Theme tokens (bare RGB channels — consumed by tailwind.config.ts).
+ * "JARVIS HUD" palette, modeled on Tony Stark's helmet/lab interfaces:
+ * holographic cyan line-work on deep navy-black, pale cyan-white text,
+ * amber/red reserved for alerts. Tuned dim enough for long sessions.
+ */
+:root {
+  --base: 4 9 15;
+  --surface: 8 20 31;
+  --surface-muted: 12 29 43;
+  --surface-strong: 19 42 59;
+  --ink: 222 245 252;
+  --ink-soft: 164 206 222;
+  --ink-muted: 108 152 171;
+  --ink-faint: 68 103 120;
+  --glow: 92 225 255; /* HUD cyan */
+  color-scheme: dark;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background-color: rgb(var(--base));
+  color: rgb(var(--ink));
+  /* HUD backdrop: soft cyan bloom at the top, faint concentric "radar" rings
+     bottom-right, and a barely-visible hexagon lattice. All very low alpha. */
+  background-image:
+    radial-gradient(60rem 26rem at 50% -12%, rgb(92 225 255 / 0.10), transparent 65%),
+    repeating-radial-gradient(circle at 100% 100%, transparent 0 46px, rgb(92 225 255 / 0.035) 46px 47px),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='97' viewBox='0 0 56 97'%3E%3Cpath d='M28 0 56 16.2v32.3L28 64.7 0 48.5V16.2zM28 64.7 56 80.8V97M28 64.7 0 80.8V97' fill='none' stroke='%235ce1ff' stroke-opacity='0.045' stroke-width='1'/%3E%3C/svg%3E");
+  background-size: auto, auto, 56px 97px;
+  background-attachment: fixed;
+}
+
+@layer utilities {
+  .glass {
+    background-color: rgb(var(--surface) / 0.72);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+  /* HUD frame: short cyan corner brackets on a panel (combine with .glass and
+     a thin border-line). Uses background-image only, so it keeps whatever
+     background-color the element has. */
+  .hud-frame {
+    --hud-c: rgb(var(--glow) / 0.7);
+    background-image:
+      linear-gradient(var(--hud-c), var(--hud-c)), linear-gradient(var(--hud-c), var(--hud-c)),
+      linear-gradient(var(--hud-c), var(--hud-c)), linear-gradient(var(--hud-c), var(--hud-c)),
+      linear-gradient(var(--hud-c), var(--hud-c)), linear-gradient(var(--hud-c), var(--hud-c)),
+      linear-gradient(var(--hud-c), var(--hud-c)), linear-gradient(var(--hud-c), var(--hud-c));
+    background-repeat: no-repeat;
+    background-size:
+      12px 1.5px, 1.5px 12px, 12px 1.5px, 1.5px 12px,
+      12px 1.5px, 1.5px 12px, 12px 1.5px, 1.5px 12px;
+    background-position:
+      left top, left top, right top, right top,
+      left bottom, left bottom, right bottom, right bottom;
+  }
+  /* Holographic text: pale cyan-white → cyan. */
+  .text-gradient {
+    background-image: linear-gradient(90deg, #eafcff 0%, #9aeeff 50%, #3fd8f5 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+}
+
+::selection {
+  background: rgb(92 225 255 / 0.3);
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-thumb {
+  background: rgb(92 225 255 / 0.18);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(92 225 255 / 0.45);
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
